@@ -1,18 +1,18 @@
-# mkdocs-plugin-template
+# mkdocs-obsidian-excalidraw-plugin
 
-This is a template for a MkDocs plugin.
+This plugin enables included excalidraw images in obsidian for mkdocs, which are created by [obsidian-excalidraw-plugin](https://github.com/zsviczian/obsidian-excalidraw-plugin).
 
 ## Setup
 
 Install the plugin using pip:
 
-`pip install mkdocs-your-plugin-name`
+`pip install mkdocs-obsidian-excalidraw-plugin`
 
 Activate the plugin in `mkdocs.yml`:
 ```yaml
 plugins:
   - search
-  - your-plugin-name
+  - obsidian-excalidraw
 ```
 
 > **Note:** If you have no `plugins` entry in your config file yet, you'll likely also want to add the `search` plugin. MkDocs enables it by default if there is no `plugins` entry set, but now you have to enable it explicitly.
@@ -21,7 +21,7 @@ More information about plugins in the [MkDocs documentation][mkdocs-plugins].
 
 ## Config
 
-* `param` - This does something
+~~* `param` - This does something~~
 
 ## Usage
 
