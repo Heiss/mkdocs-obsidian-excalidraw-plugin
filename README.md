@@ -1,6 +1,8 @@
 # mkdocs-obsidian-excalidraw-plugin
 
-This plugin enables included excalidraw images in obsidian for mkdocs, which are created by [obsidian-excalidraw-plugin](https://github.com/zsviczian/obsidian-excalidraw-plugin).
+This plugin includes excalidraw markdown files into the markdown files, which are created by [obsidian-excalidraw-plugin](https://github.com/zsviczian/obsidian-excalidraw-plugin). It fences it with code-block with `excalidraw`-type. In combination with [mkdocs-kroki-plugin](https://github.com/AVATEAM-IT-SYSTEMHAUS/mkdocs-kroki-plugin) you can include such files automatically into your website.
+
+> **Note:** All excalidraw markdown files has to have the extension `.excalidraw.md`, otherwise the plugin will not find them.
 
 ## Setup
 
@@ -19,9 +21,38 @@ plugins:
 
 More information about plugins in the [MkDocs documentation][mkdocs-plugins].
 
+### Template setup for complete obsidian setup
+
+Install the following plugins: (search for them by yourself for more documentation)
+
+- mkdocs-obsidian-bridge
+- mkdocs-obsidian-excalidraw-plugin
+- mkdocs-obsidian-support-plugin
+- mkdocs-kroki-plugin
+
+`pip install mkdocs-obsidian-bridge mkdocs-obsidian-excalidraw-plugin mkdocs-obsidian-support-plugin mkdocs-kroki-plugin`
+
+And set them up like the following
+
+```yaml
+plugins:
+  - search
+  - obsidian-excalidraw:
+      FencePrefix: ""
+  - obsidian-support
+  - obsidian-bridge
+  - kroki:
+      FencePrefix: ""
+      EnableExcalidraw: true
+      HttpMethod: POST
+      FileTypes:
+        - svg
+        - png
+```
+
 ## Config
 
-~~* `param` - This does something~~
+* `FencePrefix` - Adjust this to your config of kroki. If you do not specify it, it will defaults to `kroki-`. It is does not set correctly, kroki-plugin will not find the code block this plugin included.
 
 ## Usage
 

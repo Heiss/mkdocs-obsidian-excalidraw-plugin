@@ -1,67 +1,42 @@
-import os
-import sys
+import logging
 from timeit import default_timer as timer
-from datetime import datetime, timedelta
-
-from mkdocs import utils as mkdocs_utils
-from mkdocs.config import config_options, Config
+from mkdocs.config import config_options
 from mkdocs.plugins import BasePlugin
+import difflib
+
+from .update_page import update_page, is_excalidraw_md_file, is_excalidraw_included
+
+logger = logging.getLogger('mkdocs.plugins.obsidian_excalidraw.plugin')
 
 class ObsidianExcalidraw(BasePlugin):
 
     config_scheme = (
-        ('param', config_options.Type(str, default='')),
+        ('FencePrefix', config_options.Type(str, default='kroki-')),
     )
 
     def __init__(self):
         self.enabled = True
         self.total_time = 0
 
-    def on_serve(self, server):
-        return server
-
-    def on_pre_build(self, config):
-        return
-
     def on_files(self, files, config):
+        prefix = self.config["FencePrefix"]
+        removing_files = []
+        for file in files:
+            logger.debug(f"search for excalidraw-files: {file}")
+            if is_excalidraw_md_file(file):
+                removing_files.append(file)
+                continue
+            
+            if file.src_path.endswith(".md") and is_excalidraw_included(file.content_string):
+                markdown = file.content_string
+                logger.debug(f"Markdown file found and excalidraw is included: {file}")
+                path = file.abs_src_path
+                file.content_string = update_page(markdown, file, prefix, config)
+                file.abs_src_path = path
+                logger.debug(f"Changes: {"".join(list(difflib.ndiff(markdown, file.content_string)))}")
+
+        for f in removing_files:
+            files.remove(f)
+            logger.debug(f"Removing file from nav, because it is an excalidraw file: {f}")
+        
         return files
-
-    def on_nav(self, nav, config, files):
-        return nav
-
-    def on_env(self, env, config, files):
-        return env
-    
-    def on_config(self, config):
-        return config
-
-    def on_post_build(self, config):
-        return
-
-    def on_pre_template(self, template, template_name, config):
-        return template
-
-    def on_template_context(self, context, template_name, config):
-        return context
-    
-    def on_post_template(self, output_content, template_name, config):
-        return output_content
-    
-    def on_pre_page(self, page, config, files):
-        return page
-
-    def on_page_read_source(self, page, config):
-        return ""
-
-    def on_page_markdown(self, markdown, page, config, files):
-        return markdown
-
-    def on_page_content(self, html, page, config, files):
-        return html
-
-    def on_page_context(self, context, page, config, nav):
-        return context
-
-    def on_post_page(self, output_content, page, config):
-        return output_content
-
