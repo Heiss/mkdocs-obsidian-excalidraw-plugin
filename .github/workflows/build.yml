@@ -1,4 +1,4 @@
-name: Build MkDocs Confluence Publisher
+name: Build MkDocs Obsidian Excalidraw
 
 on:
   push:
