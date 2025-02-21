@@ -2,10 +2,8 @@ from mkdocs.structure.nav import Page
 from mkdocs.structure.files import File
 import logging
 import re
-import sys
 import os
 from urllib.parse import unquote
-from lzstr import LZStringDecompressor
 
 logger = logging.getLogger('mkdocs.plugins.obsidian_excalidraw.update_page')
 
